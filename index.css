@@ -1,0 +1,32 @@
+.world_border {
+  stroke-width: 3;
+  stroke: gray;
+  fill: none;
+}
+
+.meridian, .parallel {
+  fill: none;
+  stroke-width: 0.2;
+  stroke: gray;
+}
+.meridian.world, .parallel.world {
+  stroke-width: 1;
+}
+.meridian.plane, .parallel.plane {
+  stroke-width: 0.5;
+}
+
+.digit {
+  font-family: sans-serif;
+  fill: gray;
+}
+.digit.world {
+  font-size: 18;
+}
+.digit.plane {
+  font-size: 9;
+}
+.digit.codepoint {
+  font-size: 9;
+  text-anchor: middle;
+}
