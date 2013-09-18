@@ -6,15 +6,16 @@
   redraw_grid = function() {
     /* redraw the grid according to the current viewport
     */
-    var bottom, bottom_square, codepoints, coords, i, j, left, left_square, meridians, parallels, plane_digits, right, right_square, square_coords, top, top_square, x, x_domain, y, y_domain, _i, _j, _results, _results2;
+    var bbox, bottom, bottom_square, characters, codepoints, coords, i, j, left, left_square, meridians, parallels, plane_digits, right, right_square, square_coords, top, top_square, x, x_domain, y, y_domain, _i, _j, _results, _results2;
     x = global.x;
     y = global.y;
     /* convert the viewport back to domain coordinates
     */
+    bbox = global.vis.node().getBoundingClientRect();
     left = Math.max(0, Math.floor(x.invert(0)));
-    right = Math.min(Math.ceil(x.invert(global.width)), 1024);
+    right = Math.min(Math.ceil(x.invert(bbox.width)), 1024);
     top = Math.max(0, Math.floor(y.invert(0)));
-    bottom = Math.min(Math.ceil(y.invert(global.height)), 1280);
+    bottom = Math.min(Math.ceil(y.invert(bbox.height)), 1280);
     /* filter the obtained domains according to the current zoom
     */
     x_domain = (function() {
@@ -82,8 +83,6 @@
     /* update the world's border
     */
     global.vis.selectAll('.world_border').attr('d', "M" + (x(0)) + " " + (y(0)) + " L" + (x(1024)) + " " + (y(0)) + " L" + (x(1024)) + " " + (y(1024)) + " L" + (x(256)) + " " + (y(1024)) + " L" + (x(256)) + " " + (y(1280)) + " L" + (x(0)) + " " + (y(1280)) + " z");
-    /* create a portion of the code point digits tree according to the viewport
-    */
     /* translate the world-level digits
     */
     global.vis.selectAll('.world.digit').attr('x', function(d) {
@@ -103,7 +102,7 @@
     /* draw plane-level digits
     */
     square_coords = [];
-    if (global.zoom.scale() > 6 && global.zoom.scale() <= 128) {
+    if (global.zoom.scale() > 6 && global.zoom.scale() <= 176) {
       left_square = Math.floor(left / 16);
       right_square = Math.ceil(right / 16);
       top_square = Math.floor(top / 16);
@@ -134,10 +133,10 @@
       return y(16 * d.i);
     });
     plane_digits.exit().remove();
-    /* draw codepoints
+    /* draw codepoints and characters
     */
     coords = [];
-    if (global.zoom.scale() > 128) {
+    if (global.zoom.scale() > 64) {
       for (i = top; top <= bottom ? i < bottom : i > bottom; top <= bottom ? i++ : i--) {
         for (j = left; left <= right ? j < right : j > right; left <= right ? j++ : j--) {
           /* skip coordinates in the bottom right corner, where there are no planes
@@ -152,7 +151,7 @@
         }
       }
     }
-    codepoints = global.vis.selectAll('.codepoint').data(coords, function(d) {
+    codepoints = global.vis.selectAll('.codepoint').data((global.zoom.scale() > 176 ? coords : []), function(d) {
       return d.code;
     });
     codepoints.enter().append('text').attr('class', 'codepoint digit').text(function(d) {
@@ -164,9 +163,24 @@
       return y(d.i + 1);
     });
     codepoints.exit().remove();
+    characters = global.vis.selectAll('.character').data(coords, function(d) {
+      return d.code;
+    });
+    characters.enter().append('text').attr('class', 'character').text(function(d) {
+      return String.fromCodePoint(d.code);
+    }).attr('dy', '0.3em');
+    characters.attr('x', function(d) {
+      return x(d.j + 0.5);
+    }).attr('y', function(d) {
+      return y(d.i + 0.5);
+    }).attr('font-size', function(d) {
+      return 12 * global.zoom.scale() / 64.0;
+    });
+    return characters.exit().remove();
     /* DEBUG print the number of elements within the vis
     */
-    return console.log(global.vis.selectAll('.meridian, .parallel, .digit').size());
+    /* DEBUG print the current zoom scale
+    */
   };
 
   on_zoom = function() {
@@ -174,21 +188,26 @@
   };
 
   window.main = function() {
-    global.width = 960;
-    global.height = 500;
     /* hexadecimal formatters
     */
+    var bbox;
     global.hex = d3.format('X');
     global.three_digits_hex = d3.format('03X');
     global.five_digits_hex = d3.format('05X');
-    /* scales for "meridians" and "parallels"
-    */
-    global.x = d3.scale.linear().domain([0, 1024]).range([320, 320 + 320]);
-    global.y = d3.scale.linear().domain([0, 1280]).range([50, 400 + 50]);
-    global.zoom = d3.behavior.zoom().x(global.x).y(global.y).scaleExtent([1, 1024]).on('zoom', on_zoom);
     /* prepare the vis
     */
-    global.vis = d3.select('body').append('svg').attr('width', global.width).attr('height', global.height).call(global.zoom);
+    global.vis = d3.select('body').append('svg').attr('width', '100%').attr('height', '100%');
+    /* obtain the current viewport to center the chart
+    */
+    bbox = global.vis.node().getBoundingClientRect();
+    /* scales for "meridians" and "parallels"
+    */
+    global.x = d3.scale.linear().domain([0, 1024]).range([bbox.width / 2 - 160, bbox.width / 2 + 160]);
+    global.y = d3.scale.linear().domain([0, 1280]).range([bbox.height / 2 - 200, bbox.height / 2 + 200]);
+    /* zoom behavior
+    */
+    global.zoom = d3.behavior.zoom().x(global.x).y(global.y).scaleExtent([1, 1024]).on('zoom', on_zoom);
+    global.vis.call(global.zoom);
     /* create the world-level digits
     */
     global.vis.selectAll('.world.digit').data([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]).enter().append('text').attr('class', 'world digit').text(function(d) {

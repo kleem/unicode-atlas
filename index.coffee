@@ -6,10 +6,12 @@ redraw_grid = () ->
     y = global.y
     
     ### convert the viewport back to domain coordinates ###
+    bbox = global.vis.node().getBoundingClientRect()
+    
     left = Math.max(0, Math.floor(x.invert(0)))
-    right = Math.min(Math.ceil(x.invert(global.width)), 1024)
+    right = Math.min(Math.ceil(x.invert(bbox.width)), 1024)
     top = Math.max(0, Math.floor(y.invert(0)))
-    bottom = Math.min(Math.ceil(y.invert(global.height)), 1280)
+    bottom = Math.min(Math.ceil(y.invert(bbox.height)), 1280)
     
     ### filter the obtained domains according to the current zoom ###
     x_domain = [left...right].filter (d) ->
@@ -66,17 +68,6 @@ redraw_grid = () ->
     global.vis.selectAll('.world_border')
         .attr('d', "M#{x(0)} #{y(0)} L#{x(1024)} #{y(0)} L#{x(1024)} #{y(1024)} L#{x(256)} #{y(1024)} L#{x(256)} #{y(1280)} L#{x(0)} #{y(1280)} z")
         
-    ### create a portion of the code point digits tree according to the viewport ###
-    # planes = []
-    # for p in [0...17]
-        # squares = []
-        # for s in [0...256]
-            # codepoints = []
-            # for cp in [0...256]
-                # codepoints.push({code: cp})
-            # squares.push({code: s, children: codepoints})
-        # planes.push({code: p, children: squares})
-        
     ### translate the world-level digits ###
     global.vis.selectAll('.world.digit')
         .attr('x', (d) -> x(256 * (d % 4)))
@@ -89,7 +80,7 @@ redraw_grid = () ->
     ### draw plane-level digits ###
     square_coords = []
     
-    if global.zoom.scale() > 6 and global.zoom.scale() <= 128
+    if global.zoom.scale() > 6 and global.zoom.scale() <= 176
         left_square = Math.floor(left / 16)
         right_square = Math.ceil(right / 16)
         top_square = Math.floor(top / 16)
@@ -120,10 +111,10 @@ redraw_grid = () ->
         
     plane_digits.exit().remove()
     
-    ### draw codepoints ###
+    ### draw codepoints and characters ###
     coords = []
     
-    if global.zoom.scale() > 128
+    if global.zoom.scale() > 64
         for i in [top...bottom]
             for j in [left...right]
                 ### skip coordinates in the bottom right corner, where there are no planes ###
@@ -134,7 +125,7 @@ redraw_grid = () ->
                         code: ((Math.floor(j / 256) + 4 * Math.floor(i / 256)))*65536 + (Math.floor(i / 16) % 16)*4096 + (Math.floor(j / 16) % 16)*256 + (j % 16)*16 + (i % 16)
                         
     codepoints = global.vis.selectAll('.codepoint')
-        .data(coords, (d) -> d.code)
+        .data((if global.zoom.scale() > 176 then coords else []), (d) -> d.code)
         
     codepoints
       .enter().append('text')
@@ -148,42 +139,63 @@ redraw_grid = () ->
         
     codepoints.exit().remove()
     
+    characters = global.vis.selectAll('.character')
+        .data(coords, (d) -> d.code)
+        
+    characters
+      .enter().append('text')
+        .attr('class', 'character')
+        .text((d) -> String.fromCodePoint(d.code))
+        .attr('dy', '0.3em')
+        
+    characters
+        .attr('x', (d) -> x(d.j + 0.5))
+        .attr('y', (d) -> y(d.i + 0.5))
+        .attr('font-size', (d) -> 12 * global.zoom.scale() / 64.0)
+        
+    characters.exit().remove()
+    
     ### DEBUG print the number of elements within the vis ###
-    # console.log(global.vis.selectAll('.meridian, .parallel, .digit').size())
+    # console.log(global.vis.selectAll('.meridian, .parallel, .digit, .character').size())
+    
+    ### DEBUG print the current zoom scale ###
+    # console.log(global.zoom.scale())
     
 on_zoom = () ->
     redraw_grid()
     
 window.main = () ->
-    global.width = 960
-    global.height = 500
-    
     ### hexadecimal formatters ###
     global.hex = d3.format('X')
     global.three_digits_hex = d3.format('03X')
     global.five_digits_hex = d3.format('05X')
     
+    ### prepare the vis ###
+    global.vis = d3.select('body').append('svg')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        
+    ### obtain the current viewport to center the chart ###
+    bbox = global.vis.node().getBoundingClientRect()
+    
     ### scales for "meridians" and "parallels" ###
     global.x = d3.scale.linear()
         .domain([0, 1024])
-        .range([320, 320+320])
+        .range([bbox.width/2-160, bbox.width/2+160])
         
     global.y = d3.scale.linear()
         .domain([0, 1280])
-        .range([50, 400+50])
+        .range([bbox.height/2-200, bbox.height/2+200])
         
+    ### zoom behavior ###
     global.zoom = d3.behavior.zoom()
         .x(global.x)
         .y(global.y)
         .scaleExtent([1, 1024])
         .on('zoom', on_zoom)
         
-    ### prepare the vis ###
-    global.vis = d3.select('body').append('svg')
-        .attr('width', global.width)
-        .attr('height', global.height)
-        .call(global.zoom)
-        
+    global.vis.call(global.zoom)
+    
     ### create the world-level digits ###
     global.vis.selectAll('.world.digit')
         .data([0...17])
