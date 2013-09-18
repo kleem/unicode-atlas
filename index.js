@@ -1,10 +1,10 @@
 (function() {
-  var global, on_zoom, redraw_grid;
+  var global, on_zoom, redraw;
 
   global = {};
 
-  redraw_grid = function() {
-    /* redraw the grid according to the current viewport
+  redraw = function() {
+    /* redraw the visualization according to the current viewport
     */
     var bbox, bottom, bottom_square, characters, codepoints, coords, i, j, left, left_square, meridians, parallels, plane_digits, right, right_square, square_coords, top, top_square, x, x_domain, y, y_domain, _i, _j, _results, _results2;
     x = global.x;
@@ -184,7 +184,7 @@
   };
 
   on_zoom = function() {
-    return redraw_grid();
+    return redraw();
   };
 
   window.main = function() {
@@ -216,9 +216,9 @@
     /* draw Unicode's "world borders"
     */
     global.vis.append('path').attr('class', 'world_border');
-    /* draw the grid according to the current viewport (translation + zoom)
+    /* redraw the visualization according to the current viewport (translation + zoom)
     */
-    return redraw_grid();
+    return redraw();
   };
 
 }).call(this);

@@ -1,7 +1,7 @@
 global = {}
 
-redraw_grid = () ->
-    ### redraw the grid according to the current viewport ###
+redraw = () ->
+    ### redraw the visualization according to the current viewport ###
     x = global.x
     y = global.y
     
@@ -162,7 +162,7 @@ redraw_grid = () ->
     # console.log(global.zoom.scale())
     
 on_zoom = () ->
-    redraw_grid()
+    redraw()
     
 window.main = () ->
     ### hexadecimal formatters ###
@@ -209,6 +209,6 @@ window.main = () ->
     global.vis.append('path')
         .attr('class', 'world_border')
         
-    ### draw the grid according to the current viewport (translation + zoom) ###
-    redraw_grid()
+    ### redraw the visualization according to the current viewport (translation + zoom) ###
+    redraw()
     
