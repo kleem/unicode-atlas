@@ -13,7 +13,14 @@ redraw = () ->
     top = Math.max(0, Math.floor(y.invert(0)))
     bottom = Math.min(Math.ceil(y.invert(bbox.height)), 1280)
     
-    ### filter the obtained domains according to the current zoom ###
+    ### redraw blocks ###
+    global.vis.selectAll('.block')
+        .attr('x', (d) -> x(d.x1))
+        .attr('y', (d) -> y(d.y1))
+        .attr('width', (d) -> x(d.x2)-x(d.x1))
+        .attr('height', (d) -> y(d.y2)-y(d.y1))
+        
+    ### draw gridlines: filter the obtained domains according to the current zoom ###
     x_domain = [left...right].filter (d) ->
         if global.zoom.scale() <= 2
             return d % 256 == 0
@@ -196,6 +203,19 @@ window.main = () ->
         
     global.vis.call(global.zoom)
     
+    ### create blocks ###
+    blocks = [{
+        name: 'Egyptian Hieroglyphs',
+        x1: 256,
+        y1: 48,
+        x2: 323,
+        y2: 64
+    }]
+    global.vis.selectAll('.block')
+        .data(blocks)
+      .enter().append('rect')
+        .attr('class', 'block')
+        
     ### create the world-level digits ###
     global.vis.selectAll('.world.digit')
         .data([0...17])

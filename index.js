@@ -16,7 +16,18 @@
     right = Math.min(Math.ceil(x.invert(bbox.width)), 1024);
     top = Math.max(0, Math.floor(y.invert(0)));
     bottom = Math.min(Math.ceil(y.invert(bbox.height)), 1280);
-    /* filter the obtained domains according to the current zoom
+    /* redraw blocks
+    */
+    global.vis.selectAll('.block').attr('x', function(d) {
+      return x(d.x1);
+    }).attr('y', function(d) {
+      return y(d.y1);
+    }).attr('width', function(d) {
+      return x(d.x2) - x(d.x1);
+    }).attr('height', function(d) {
+      return y(d.y2) - y(d.y1);
+    });
+    /* draw gridlines: filter the obtained domains according to the current zoom
     */
     x_domain = (function() {
       _results = [];
@@ -190,7 +201,7 @@
   window.main = function() {
     /* hexadecimal formatters
     */
-    var bbox;
+    var bbox, blocks;
     global.hex = d3.format('X');
     global.three_digits_hex = d3.format('03X');
     global.five_digits_hex = d3.format('05X');
@@ -208,6 +219,18 @@
     */
     global.zoom = d3.behavior.zoom().x(global.x).y(global.y).scaleExtent([1, 1024]).on('zoom', on_zoom);
     global.vis.call(global.zoom);
+    /* create blocks
+    */
+    blocks = [
+      {
+        name: 'Egyptian Hieroglyphs',
+        x1: 256,
+        y1: 48,
+        x2: 323,
+        y2: 64
+      }
+    ];
+    global.vis.selectAll('.block').data(blocks).enter().append('rect').attr('class', 'block');
     /* create the world-level digits
     */
     global.vis.selectAll('.world.digit').data([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]).enter().append('text').attr('class', 'world digit').text(function(d) {

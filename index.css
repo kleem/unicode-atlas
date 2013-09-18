@@ -38,6 +38,12 @@ html, body {
   text-anchor: middle;
 }
 
+.block {
+  opacity: 0.4;
+  fill: yellow;
+  stroke: none;
+}
+
 @font-face {
   font-family: "Aegyptus";
   src: local("Aegyptus Normale");
