@@ -46,7 +46,7 @@ html, body {
 
 @font-face {
   font-family: "Aegyptus";
-  src: local("Aegyptus Normale");
+  src: url(fonts/Aegyptus_B.ttf);
   unicode-range: U+13000 –1342F;
 }
 
