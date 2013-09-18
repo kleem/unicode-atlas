@@ -1,7 +1,14 @@
 (function() {
   var global, on_zoom, redraw;
 
-  global = {};
+  global = {
+    /* constants
+    */
+    ZOOM: {
+      characters: 64
+    },
+    BLOCK_BORDER: 8
+  };
 
   redraw = function() {
     /* redraw the visualization according to the current viewport
@@ -18,14 +25,15 @@
     bottom = Math.min(Math.ceil(y.invert(bbox.height)), 1280);
     /* redraw blocks
     */
-    global.vis.selectAll('.block').attr('x', function(d) {
-      return x(d.x1);
-    }).attr('y', function(d) {
-      return y(d.y1);
-    }).attr('width', function(d) {
-      return x(d.x2) - x(d.x1);
-    }).attr('height', function(d) {
-      return y(d.y2) - y(d.y1);
+    global.vis.selectAll('.block').attr('d', function(d) {
+      var path;
+      path = "M" + (x(d.x1)) + " " + (y(d.y1)) + " L" + (x(d.x2)) + " " + (y(d.y1)) + " L" + (x(d.x2)) + " " + (y(d.y2)) + " L" + (x(d.x1)) + " " + (y(d.y2)) + " z";
+      /* blocks are hollow when displaying characters
+      */
+      if (global.zoom.scale() > global.ZOOM.characters) {
+        path += " M" + (x(d.x1) + global.BLOCK_BORDER) + " " + (y(d.y1) + global.BLOCK_BORDER) + " L" + (x(d.x2) - global.BLOCK_BORDER) + " " + (y(d.y1) + global.BLOCK_BORDER) + " L" + (x(d.x2) - global.BLOCK_BORDER) + " " + (y(d.y2) - global.BLOCK_BORDER) + " L" + (x(d.x1) + global.BLOCK_BORDER) + " " + (y(d.y2) - global.BLOCK_BORDER) + " z";
+      }
+      return path;
     });
     /* draw gridlines: filter the obtained domains according to the current zoom
     */
@@ -147,7 +155,7 @@
     /* draw codepoints and characters
     */
     coords = [];
-    if (global.zoom.scale() > 64) {
+    if (global.zoom.scale() > global.ZOOM.characters) {
       for (i = top; top <= bottom ? i < bottom : i > bottom; top <= bottom ? i++ : i--) {
         for (j = left; left <= right ? j < right : j > right; left <= right ? j++ : j--) {
           /* skip coordinates in the bottom right corner, where there are no planes
@@ -230,7 +238,7 @@
         y2: 64
       }
     ];
-    global.vis.selectAll('.block').data(blocks).enter().append('rect').attr('class', 'block');
+    global.vis.selectAll('.block').data(blocks).enter().append('path').attr('class', 'block');
     /* create the world-level digits
     */
     global.vis.selectAll('.world.digit').data([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]).enter().append('text').attr('class', 'world digit').text(function(d) {

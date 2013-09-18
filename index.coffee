@@ -1,4 +1,10 @@
-global = {}
+global = {
+    ### constants ###
+    ZOOM: {
+        characters: 64
+    },
+    BLOCK_BORDER: 8
+}
 
 redraw = () ->
     ### redraw the visualization according to the current viewport ###
@@ -15,11 +21,15 @@ redraw = () ->
     
     ### redraw blocks ###
     global.vis.selectAll('.block')
-        .attr('x', (d) -> x(d.x1))
-        .attr('y', (d) -> y(d.y1))
-        .attr('width', (d) -> x(d.x2)-x(d.x1))
-        .attr('height', (d) -> y(d.y2)-y(d.y1))
-        
+        .attr 'd', (d) ->
+            path = "M#{x(d.x1)} #{y(d.y1)} L#{x(d.x2)} #{y(d.y1)} L#{x(d.x2)} #{y(d.y2)} L#{x(d.x1)} #{y(d.y2)} z"
+            
+            ### blocks are hollow when displaying characters ###
+            if global.zoom.scale() > global.ZOOM.characters
+                path += " M#{x(d.x1)+global.BLOCK_BORDER} #{y(d.y1)+global.BLOCK_BORDER} L#{x(d.x2)-global.BLOCK_BORDER} #{y(d.y1)+global.BLOCK_BORDER} L#{x(d.x2)-global.BLOCK_BORDER} #{y(d.y2)-global.BLOCK_BORDER} L#{x(d.x1)+global.BLOCK_BORDER} #{y(d.y2)-global.BLOCK_BORDER} z"
+                
+            return path
+            
     ### draw gridlines: filter the obtained domains according to the current zoom ###
     x_domain = [left...right].filter (d) ->
         if global.zoom.scale() <= 2
@@ -121,7 +131,7 @@ redraw = () ->
     ### draw codepoints and characters ###
     coords = []
     
-    if global.zoom.scale() > 64
+    if global.zoom.scale() > global.ZOOM.characters
         for i in [top...bottom]
             for j in [left...right]
                 ### skip coordinates in the bottom right corner, where there are no planes ###
@@ -213,7 +223,7 @@ window.main = () ->
     }]
     global.vis.selectAll('.block')
         .data(blocks)
-      .enter().append('rect')
+      .enter().append('path')
         .attr('class', 'block')
         
     ### create the world-level digits ###
