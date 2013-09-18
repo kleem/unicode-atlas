@@ -1,1 +1,0 @@
-A test with the Unicode code point space.
