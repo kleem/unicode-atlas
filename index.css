@@ -38,7 +38,20 @@ html, body {
   text-anchor: middle;
 }
 
+@font-face {
+  font-family: "Aegyptus";
+  src: local("Aegyptus Normale");
+  unicode-range: U+13000 –1342F;
+}
+
+@font-face {
+  font-family: "Aegean";
+  src: local("Aegean Normale");
+  unicode-range: U+10100 –1013F;
+}
+
 .character {
+  font-family: serif, "Aegyptus", "Aegean";
   fill: black;
   text-anchor: middle;
 }
