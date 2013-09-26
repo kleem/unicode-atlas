@@ -40,6 +40,12 @@
   unicode-range: U+1000 –109F;
 }
 
+@font-face {
+  font-family: "Georgian";
+  src: url(DroidSansGeorgian.ttf);
+  unicode-range: U+10A0 –10C5, U+10D0-10FC, U+2D00-2D25;
+}
+
 .character {
-  font-family: serif, "Aegean", "Aegyptus", "Akkadian", "Maya", "Musica", "Myanmar", "Tengwar";
+  font-family: serif, "Aegean", "Aegyptus", "Akkadian", "Georgian", "Maya", "Musica", "Myanmar", "Tengwar";
 }
