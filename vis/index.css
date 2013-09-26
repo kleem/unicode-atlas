@@ -5,16 +5,20 @@ html, body {
   height: 100%;
 }
 
+svg {
+  shape-rendering: crispEdges;
+}
+
 .world_border {
   stroke-width: 1;
-  stroke: black;
+  stroke: #0a4b75;
   fill: none;
 }
 
 .meridian, .parallel {
   fill: none;
   stroke-width: 1;
-  stroke: black;
+  stroke: #1f78b4;
   opacity: 0.1;
 }
 .meridian.world, .parallel.world {
@@ -26,7 +30,7 @@ html, body {
 
 .digit {
   font-family: sans-serif;
-  fill: gray;
+  fill: #1f78b4;
 }
 .digit.world {
   font-size: 18;
@@ -40,9 +44,14 @@ html, body {
 }
 
 .block {
-  fill: rgba(228, 26, 28, 0.2);
-  stroke: black;
-  stroke-width: 0.5;
+  fill: #e3e3e3;
+  stroke: none;
+}
+
+.block_borders {
+  stroke: gray;
+  stroke-width: 1;
+  fill: none;
 }
 
 .character {
@@ -51,7 +60,7 @@ html, body {
 }
 
 .block:hover {
-  fill: rgba(228, 26, 28, 0.4);
+  fill: #eeeeee;
 }
 
 .character, .meridian, .parallel, .digit {

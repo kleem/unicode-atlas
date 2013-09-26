@@ -26,6 +26,7 @@
     /* redraw blocks
     */
     global.vis.selectAll('.block').attr('d', global.path_generator);
+    global.vis.selectAll('.block_borders').attr('d', global.path_generator);
     /* draw gridlines: filter the obtained domains according to the current zoom
     */
     x_domain = (function() {
@@ -200,13 +201,16 @@
   window.main = function() {
     /* hexadecimal formatters
     */
-    var bbox;
+    var bbox, blocks_layer;
     global.hex = d3.format('X');
     global.three_digits_hex = d3.format('03X');
     global.five_digits_hex = d3.format('05X');
     /* prepare the vis
     */
     global.vis = d3.select('body').append('svg').attr('width', '100%').attr('height', '100%');
+    /* prepare layers
+    */
+    blocks_layer = global.vis.append('g');
     /* obtain the current viewport to center the chart
     */
     bbox = global.vis.node().getBoundingClientRect();
@@ -232,9 +236,10 @@
     d3.json('vis/data/Blocks.topo.json', function(error, data) {
       var blocks;
       blocks = topojson.feature(data, data.objects.Blocks);
-      return global.vis.selectAll('.block').data(blocks.features).enter().append('path').attr('class', 'block').attr('d', global.path_generator).append('title').text(function(d) {
+      blocks_layer.selectAll('.block').data(blocks.features).enter().append('path').attr('class', 'block').attr('d', global.path_generator).append('title').text(function(d) {
         return d.properties.name;
       });
+      return blocks_layer.append('path').datum(topojson.mesh(data, data.objects.Blocks)).attr('class', 'block_borders').attr('d', global.path_generator);
     });
     /* create the world-level digits
     */

@@ -23,6 +23,9 @@ redraw = () ->
     global.vis.selectAll('.block')
         .attr('d', global.path_generator)
         
+    global.vis.selectAll('.block_borders')
+        .attr('d', global.path_generator)
+        
     ### draw gridlines: filter the obtained domains according to the current zoom ###
     x_domain = [left...right].filter (d) ->
         if global.zoom.scale() <= 2
@@ -185,6 +188,9 @@ window.main = () ->
         .attr('width', '100%')
         .attr('height', '100%')
         
+    ### prepare layers ###
+    blocks_layer = global.vis.append('g')
+    
     ### obtain the current viewport to center the chart ###
     bbox = global.vis.node().getBoundingClientRect()
     
@@ -216,13 +222,18 @@ window.main = () ->
     d3.json 'vis/data/Blocks.topo.json', (error, data) ->
         blocks = topojson.feature(data, data.objects.Blocks)
         
-        global.vis.selectAll('.block')
+        blocks_layer.selectAll('.block')
             .data(blocks.features)
           .enter().append('path')
             .attr('class', 'block')
             .attr('d', global.path_generator)
           .append('title')
             .text((d) -> d.properties.name)
+            
+        blocks_layer.append('path')
+            .datum(topojson.mesh(data, data.objects.Blocks))
+            .attr('class', 'block_borders')
+            .attr('d', global.path_generator)
             
     ### create the world-level digits ###
     global.vis.selectAll('.world.digit')
