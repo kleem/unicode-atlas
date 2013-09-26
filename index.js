@@ -229,8 +229,10 @@
         return this.stream.point(global.x(x), global.y(-y));
       }
     }));
-    d3.json('data/Blocks.json', function(error, data) {
-      return global.vis.selectAll('.block').data(data.features).enter().append('path').attr('class', 'block').attr('d', global.path_generator).append('title').text(function(d) {
+    d3.json('data/Blocks.topo.json', function(error, data) {
+      var blocks;
+      blocks = topojson.feature(data, data.objects.Blocks);
+      return global.vis.selectAll('.block').data(blocks.features).enter().append('path').attr('class', 'block').attr('d', global.path_generator).append('title').text(function(d) {
         return d.properties.name;
       });
     });

@@ -213,9 +213,11 @@ window.main = () ->
     global.path_generator = d3.geo.path()
         .projection d3.geo.transform({point: (x,y) -> this.stream.point(global.x(x),global.y(-y)) })
         
-    d3.json 'data/Blocks.json', (error, data) ->
+    d3.json 'data/Blocks.topo.json', (error, data) ->
+        blocks = topojson.feature(data, data.objects.Blocks)
+        
         global.vis.selectAll('.block')
-            .data(data.features)
+            .data(blocks.features)
           .enter().append('path')
             .attr('class', 'block')
             .attr('d', global.path_generator)
