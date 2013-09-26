@@ -20,15 +20,15 @@ redraw = () ->
     bottom = Math.min(Math.ceil(y.invert(bbox.height)), 1280)
     
     ### redraw blocks ###
-    global.vis.selectAll('.block')
-        .attr 'd', (d) ->
-            path = "M#{x(d.x1)} #{y(d.y1)} L#{x(d.x2)} #{y(d.y1)} L#{x(d.x2)} #{y(d.y2)} L#{x(d.x1)} #{y(d.y2)} z"
+    # global.vis.selectAll('.block')
+        # .attr 'd', (d) ->
+            # path = "M#{x(d.x1)} #{y(d.y1)} L#{x(d.x2)} #{y(d.y1)} L#{x(d.x2)} #{y(d.y2)} L#{x(d.x1)} #{y(d.y2)} z"
             
-            ### blocks are hollow when displaying characters ###
-            if global.zoom.scale() > global.ZOOM.characters
-                path += " M#{x(d.x1)+global.BLOCK_BORDER} #{y(d.y1)+global.BLOCK_BORDER} L#{x(d.x2)-global.BLOCK_BORDER} #{y(d.y1)+global.BLOCK_BORDER} L#{x(d.x2)-global.BLOCK_BORDER} #{y(d.y2)-global.BLOCK_BORDER} L#{x(d.x1)+global.BLOCK_BORDER} #{y(d.y2)-global.BLOCK_BORDER} z"
+            ## blocks are hollow when displaying characters ###
+            # if global.zoom.scale() > global.ZOOM.characters
+                # path += " M#{x(d.x1)+global.BLOCK_BORDER} #{y(d.y1)+global.BLOCK_BORDER} L#{x(d.x2)-global.BLOCK_BORDER} #{y(d.y1)+global.BLOCK_BORDER} L#{x(d.x2)-global.BLOCK_BORDER} #{y(d.y2)-global.BLOCK_BORDER} L#{x(d.x1)+global.BLOCK_BORDER} #{y(d.y2)-global.BLOCK_BORDER} z"
                 
-            return path
+            # return path
             
     ### draw gridlines: filter the obtained domains according to the current zoom ###
     x_domain = [left...right].filter (d) ->
@@ -214,18 +214,23 @@ window.main = () ->
     global.vis.call(global.zoom)
     
     ### create blocks ###
-    blocks = [{
-        name: 'Egyptian Hieroglyphs',
-        x1: 256,
-        y1: 48,
-        x2: 323,
-        y2: 64
-    }]
-    global.vis.selectAll('.block')
-        .data(blocks)
-      .enter().append('path')
-        .attr('class', 'block')
+    
+    ### custom projection that flips the y axis. see http://bl.ocks.org/mbostock/5663666 for reference ###
+    path_generator = d3.geo.path()
+        .projection d3.geo.transform({point: (x,y) -> this.stream.point(x,-y) })
         
+    d3.json 'data/Blocks.topo.json', (error, data) ->
+        blocks = topojson.feature(data, data.objects.Blocks)
+        
+        global.vis.selectAll('.block')
+            .data(blocks.features)
+          .enter().append('path')
+            .attr('class', 'block')
+            .attr('d', path_generator)
+            #.attr('fill', (d) -> heat_color(Math.random()))
+          .append('title')
+            .text((d) -> d.properties.name)
+            
     ### create the world-level digits ###
     global.vis.selectAll('.world.digit')
         .data([0...17])

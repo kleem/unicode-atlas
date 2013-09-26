@@ -1,0 +1,17 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "code": 0.000000, "name": "BMP", "readable_n": "Basic Multilingual Plane" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 0.000000, -256.000000 ], [ 0.000000, 0.000000 ], [ 256.000000, 0.000000 ], [ 256.000000, -256.000000 ], [ 0.000000, -256.000000 ] ] ] } }
+,
+{ "type": "Feature", "properties": { "code": 1.000000, "name": "SMP", "readable_n": "Supplementary Multilingual Plane" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 256.000000, -256.000000 ], [ 256.000000, 0.000000 ], [ 512.000000, 0.000000 ], [ 512.000000, -256.000000 ], [ 256.000000, -256.000000 ] ] ] } }
+,
+{ "type": "Feature", "properties": { "code": 2.000000, "name": "SIP", "readable_n": "Supplementary Ideographic Plane" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 512.000000, -256.000000 ], [ 512.000000, -0.000000 ], [ 768.000000, -0.000000 ], [ 768.000000, -256.000000 ], [ 512.000000, -256.000000 ] ] ] } }
+,
+{ "type": "Feature", "properties": { "code": 15.000000, "name": "PUA-A", "readable_n": "Private Use Area A" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 768.000000, -1024.000000 ], [ 768.000000, -768.000000 ], [ 1024.000000, -768.000000 ], [ 1024.000000, -1024.000000 ], [ 768.000000, -1024.000000 ] ] ] } }
+,
+{ "type": "Feature", "properties": { "code": 14.000000, "name": "SSP", "readable_n": "Supplementary Special-purpose Plane" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 512.000000, -1024.000000 ], [ 512.000000, -768.000000 ], [ 768.000000, -768.000000 ], [ 768.000000, -1024.000000 ], [ 512.000000, -1024.000000 ] ] ] } }
+,
+{ "type": "Feature", "properties": { "code": 16.000000, "name": "PUA-B", "readable_n": "Private Use Area B" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 0.000000, -1280.000000 ], [ 0.000000, -1024.000000 ], [ 256.000000, -1024.000000 ], [ 256.000000, -1280.000000 ], [ 0.000000, -1280.000000 ] ] ] } }
+
+]
+}
