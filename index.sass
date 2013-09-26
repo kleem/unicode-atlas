@@ -36,12 +36,17 @@ html, body
         text-anchor: middle
         
 .block
-    opacity: 0.4
-    fill: yellow
-    stroke: none
-    fill-rule: evenodd
+    fill: rgba(228, 26, 28, 0.2)
+    stroke: black
+    stroke-width: 0.5
     
 .character
     fill: black
     text-anchor: middle
+    
+// hover highlighting for blocks
+.block:hover
+    fill: rgba(228, 26, 28, 0.4)
+.character, .meridian, .parallel, .digit
+    pointer-events: none
     

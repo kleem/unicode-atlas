@@ -25,6 +25,7 @@
     bottom = Math.min(Math.ceil(y.invert(bbox.height)), 1280);
     /* redraw blocks
     */
+    global.vis.selectAll('.block').attr('d', global.path_generator);
     /* draw gridlines: filter the obtained domains according to the current zoom
     */
     x_domain = (function() {
@@ -199,7 +200,7 @@
   window.main = function() {
     /* hexadecimal formatters
     */
-    var bbox, path_generator;
+    var bbox;
     global.hex = d3.format('X');
     global.three_digits_hex = d3.format('03X');
     global.five_digits_hex = d3.format('05X');
@@ -209,7 +210,7 @@
     /* obtain the current viewport to center the chart
     */
     bbox = global.vis.node().getBoundingClientRect();
-    /* scales for "meridians" and "parallels"
+    /* scales for the whole drawing
     */
     global.x = d3.scale.linear().domain([0, 1024]).range([bbox.width / 2 - 160, bbox.width / 2 + 160]);
     global.y = d3.scale.linear().domain([0, 1280]).range([bbox.height / 2 - 200, bbox.height / 2 + 200]);
@@ -221,15 +222,15 @@
     */
     /* custom projection that flips the y axis. see http://bl.ocks.org/mbostock/5663666 for reference
     */
-    path_generator = d3.geo.path().projection(d3.geo.transform({
+    /* for a projection that uses quantitative scales, see http://bl.ocks.org/mbostock/6216797
+    */
+    global.path_generator = d3.geo.path().projection(d3.geo.transform({
       point: function(x, y) {
-        return this.stream.point(x, -y);
+        return this.stream.point(global.x(x), global.y(-y));
       }
     }));
-    d3.json('data/Blocks.topo.json', function(error, data) {
-      var blocks;
-      blocks = topojson.feature(data, data.objects.Blocks);
-      return global.vis.selectAll('.block').data(blocks.features).enter().append('path').attr('class', 'block').attr('d', path_generator).append('title').text(function(d) {
+    d3.json('data/Blocks.json', function(error, data) {
+      return global.vis.selectAll('.block').data(data.features).enter().append('path').attr('class', 'block').attr('d', global.path_generator).append('title').text(function(d) {
         return d.properties.name;
       });
     });
