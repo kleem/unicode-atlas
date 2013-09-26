@@ -31,15 +31,17 @@ svg {
 .digit {
   font-family: sans-serif;
   fill: #1f78b4;
+  font-size: 9;
 }
 .digit.world {
-  font-size: 18;
+  font-size: 12;
 }
-.digit.plane {
-  font-size: 9;
+.digit.world.halo {
+  stroke: white;
+  stroke-width: 4;
+  stroke-linejoin: round;
 }
 .digit.codepoint {
-  font-size: 9;
   text-anchor: middle;
 }
 
@@ -65,10 +67,6 @@ svg {
 
 .character, .meridian, .parallel, .digit {
   pointer-events: none;
-}
-
-.world.digit, .plane.digit {
-  display: none;
 }
 
 @font-face {

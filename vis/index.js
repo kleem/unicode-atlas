@@ -5,6 +5,7 @@
     /* constants
     */
     ZOOM: {
+      plane_level: 12,
       characters: 64,
       codepoints: 176
     },
@@ -112,7 +113,7 @@
     /* hide world-level digits when displaying plane-level ones
     */
     global.vis.selectAll('.world.digit').attr('display', function() {
-      if (global.zoom.scale() > 6) {
+      if (global.zoom.scale() > global.ZOOM.plane_level) {
         return 'none';
       } else {
         return 'display';
@@ -121,7 +122,7 @@
     /* draw plane-level digits
     */
     square_coords = [];
-    if (global.zoom.scale() > 6 && global.zoom.scale() <= global.ZOOM.codepoints) {
+    if (global.zoom.scale() > global.ZOOM.plane_level && global.zoom.scale() <= global.ZOOM.codepoints) {
       left_square = Math.floor(left / 16);
       right_square = Math.ceil(right / 16);
       top_square = Math.floor(top / 16);
@@ -215,7 +216,7 @@
   window.main = function() {
     /* hexadecimal formatters
     */
-    var bbox, blocks_layer;
+    var bbox, blocks_layer, new_digit;
     global.hex = d3.format('X');
     global.three_digits_hex = d3.format('03X');
     global.five_digits_hex = d3.format('05X');
@@ -267,7 +268,11 @@
     });
     /* create the world-level digits
     */
-    global.vis.selectAll('.world.digit').data([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]).enter().append('text').attr('class', 'world digit').text(function(d) {
+    new_digit = global.vis.selectAll('.world.digit.halo').data([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]).enter().append('g');
+    new_digit.append('text').attr('class', 'world digit halo').text(function(d) {
+      return global.hex(d);
+    }).attr('dx', '0.4em').attr('dy', '1.2em');
+    new_digit.append('text').attr('class', 'world digit').text(function(d) {
       return global.hex(d);
     }).attr('dx', '0.4em').attr('dy', '1.2em');
     /* draw Unicode's "world borders"

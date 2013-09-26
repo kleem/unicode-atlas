@@ -27,15 +27,16 @@ svg
 .digit
     font-family: sans-serif
     fill: #1F78B4
+    font-size: 9
     
     &.world
-        font-size: 18
-        
-    &.plane
-        font-size: 9
+        font-size: 12
+    &.world.halo
+        stroke: white
+        stroke-width: 4
+        stroke-linejoin: round
         
     &.codepoint
-        font-size: 9
         text-anchor: middle
         
 .block
@@ -56,10 +57,6 @@ svg
     fill: #EEE
 .character, .meridian, .parallel, .digit
     pointer-events: none
-    
-// hide digits
-.world.digit, .plane.digit
-    display: none
     
 @font-face
     font-family: 'Unidings'

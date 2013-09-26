@@ -1,6 +1,7 @@
 global = {
     ### constants ###
     ZOOM: {
+        plane_level: 12,
         characters: 64,
         codepoints: 176
     },
@@ -95,12 +96,12 @@ redraw = () ->
         
     ### hide world-level digits when displaying plane-level ones ###
     global.vis.selectAll('.world.digit')
-        .attr('display', () -> if global.zoom.scale() > 6 then 'none' else 'display')
+        .attr('display', () -> if global.zoom.scale() > global.ZOOM.plane_level then 'none' else 'display')
         
     ### draw plane-level digits ###
     square_coords = []
     
-    if global.zoom.scale() > 6 and global.zoom.scale() <= global.ZOOM.codepoints
+    if global.zoom.scale() > global.ZOOM.plane_level and global.zoom.scale() <= global.ZOOM.codepoints
         left_square = Math.floor(left / 16)
         right_square = Math.ceil(right / 16)
         top_square = Math.floor(top / 16)
@@ -256,9 +257,17 @@ window.main = () ->
             .attr('d', global.path_generator)
             
     ### create the world-level digits ###
-    global.vis.selectAll('.world.digit')
+    new_digit = global.vis.selectAll('.world.digit.halo')
         .data([0...17])
-      .enter().append('text')
+      .enter().append('g')
+      
+    new_digit.append('text')
+        .attr('class', 'world digit halo')
+        .text((d) -> global.hex(d))
+        .attr('dx', '0.4em')
+        .attr('dy', '1.2em')
+        
+    new_digit.append('text')
         .attr('class', 'world digit')
         .text((d) -> global.hex(d))
         .attr('dx', '0.4em')
