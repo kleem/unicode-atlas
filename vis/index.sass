@@ -8,7 +8,7 @@ svg
     shape-rendering: crispEdges
     
 .world_border
-    stroke-width: 1
+    stroke-width: 3
     stroke: #0A4B75
     fill: none
     
@@ -43,7 +43,7 @@ svg
     stroke: none
     
 .block_borders
-    stroke: gray
+    stroke: #AAA
     stroke-width: 1
     fill: none
     
@@ -56,4 +56,8 @@ svg
     fill: #EEE
 .character, .meridian, .parallel, .digit
     pointer-events: none
+    
+// hide digits
+.world.digit, .plane.digit
+    display: none
     

@@ -10,7 +10,7 @@ svg {
 }
 
 .world_border {
-  stroke-width: 1;
+  stroke-width: 3;
   stroke: #0a4b75;
   fill: none;
 }
@@ -49,7 +49,7 @@ svg {
 }
 
 .block_borders {
-  stroke: gray;
+  stroke: #aaaaaa;
   stroke-width: 1;
   fill: none;
 }
@@ -65,4 +65,8 @@ svg {
 
 .character, .meridian, .parallel, .digit {
   pointer-events: none;
+}
+
+.world.digit, .plane.digit {
+  display: none;
 }

@@ -13,7 +13,7 @@
   redraw = function() {
     /* redraw the visualization according to the current viewport
     */
-    var bbox, bottom, bottom_square, characters, codepoints, coords, i, j, left, left_square, meridians, parallels, plane_digits, right, right_square, square_coords, top, top_square, x, x_domain, y, y_domain, _i, _j, _results, _results2;
+    var bbox, bottom, bottom_square, characters, codepoints, coords, i, j, left, left_square, meridians, parallels, plane_digits, right, right_square, square_coords, top, top_square, x, x_domain, y, y_domain, _i, _j, _ref, _ref2, _results, _results2;
     x = global.x;
     y = global.y;
     /* convert the viewport back to domain coordinates
@@ -31,7 +31,7 @@
     */
     x_domain = (function() {
       _results = [];
-      for (var _i = left; left <= right ? _i < right : _i > right; left <= right ? _i++ : _i--){ _results.push(_i); }
+      for (var _i = _ref = left + 1; _ref <= right ? _i < right : _i > right; _ref <= right ? _i++ : _i--){ _results.push(_i); }
       return _results;
     }).apply(this).filter(function(d) {
       if (global.zoom.scale() <= 2) return d % 256 === 0;
@@ -40,7 +40,7 @@
     });
     y_domain = (function() {
       _results2 = [];
-      for (var _j = top; top <= bottom ? _j < bottom : _j > bottom; top <= bottom ? _j++ : _j--){ _results2.push(_j); }
+      for (var _j = _ref2 = top + 1; _ref2 <= bottom ? _j < bottom : _j > bottom; _ref2 <= bottom ? _j++ : _j--){ _results2.push(_j); }
       return _results2;
     }).apply(this).filter(function(d) {
       if (global.zoom.scale() <= 2) return d % 256 === 0;
@@ -52,7 +52,7 @@
     meridians = global.vis.selectAll('.meridian').data(x_domain, function(d) {
       return d;
     });
-    meridians.enter().append('line').attr('class', 'meridian').classed('world', function(d) {
+    meridians.enter().insert('line', '.world_border').attr('class', 'meridian').classed('world', function(d) {
       return d % 256 === 0;
     }).classed('plane', function(d) {
       return d % 16 === 0 && !(d % 256 === 0);
@@ -74,7 +74,7 @@
     parallels = global.vis.selectAll('.parallel').data(y_domain, function(d) {
       return d;
     });
-    parallels.enter().append('line').attr('class', 'parallel').classed('world', function(d) {
+    parallels.enter().insert('line', '.world_border').attr('class', 'parallel').classed('world', function(d) {
       return d % 256 === 0;
     }).classed('plane', function(d) {
       return d % 16 === 0 && !(d % 256 === 0);

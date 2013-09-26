@@ -27,7 +27,7 @@ redraw = () ->
         .attr('d', global.path_generator)
         
     ### draw gridlines: filter the obtained domains according to the current zoom ###
-    x_domain = [left...right].filter (d) ->
+    x_domain = [left+1...right].filter (d) ->
         if global.zoom.scale() <= 2
             return d % 256 == 0
         if global.zoom.scale() <= 16
@@ -35,7 +35,7 @@ redraw = () ->
             
         return true
         
-    y_domain = [top...bottom].filter (d) ->
+    y_domain = [top+1...bottom].filter (d) ->
         if global.zoom.scale() <= 2
             return d % 256 == 0
         if global.zoom.scale() <= 16
@@ -47,7 +47,7 @@ redraw = () ->
     meridians = global.vis.selectAll('.meridian')
         .data(x_domain, (d) -> d)
         
-    meridians.enter().append('line')
+    meridians.enter().insert('line', '.world_border')
         .attr('class', 'meridian')
         .classed('world', (d) -> d % 256 == 0)
         .classed('plane', (d) -> d % 16 == 0 and not (d % 256 == 0))
@@ -64,7 +64,7 @@ redraw = () ->
     parallels = global.vis.selectAll('.parallel')
         .data(y_domain, (d) -> d)
         
-    parallels.enter().append('line')
+    parallels.enter().insert('line', '.world_border')
         .attr('class', 'parallel')
         .classed('world', (d) -> d % 256 == 0)
         .classed('plane', (d) -> d % 16 == 0 and not (d % 256 == 0))
