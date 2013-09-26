@@ -25,7 +25,7 @@ svg {
   opacity: 1;
 }
 .meridian.plane, .parallel.plane {
-  opacity: 0.3;
+  opacity: 0.2;
 }
 
 .digit {
@@ -69,4 +69,16 @@ svg {
 
 .world.digit, .plane.digit {
   display: none;
+}
+
+@font-face {
+  font-family: "Unidings";
+  src: url(Unidings.ttf);
+}
+
+.block_symbol {
+  fill: #999999;
+  text-anchor: middle;
+  pointer-events: none;
+  font-family: "Unidings";
 }

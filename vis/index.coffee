@@ -1,7 +1,8 @@
 global = {
     ### constants ###
     ZOOM: {
-        characters: 64
+        characters: 64,
+        codepoints: 176
     },
     BLOCK_BORDER: 8
 }
@@ -25,6 +26,12 @@ redraw = () ->
         
     global.vis.selectAll('.block_borders')
         .attr('d', global.path_generator)
+        
+    global.vis.selectAll('.block_symbol')
+        .attr('transform', (d) -> "translate(#{global.path_generator.centroid(d)})")
+        .attr('font-size', (d) -> "#{fit_bounds(d)}px")
+        .attr('dy', (d) -> "#{fit_bounds(d)*0.35}")
+        .attr('opacity', if global.zoom.scale() > global.ZOOM.characters then 0.1 else 1)
         
     ### draw gridlines: filter the obtained domains according to the current zoom ###
     x_domain = [left+1...right].filter (d) ->
@@ -93,7 +100,7 @@ redraw = () ->
     ### draw plane-level digits ###
     square_coords = []
     
-    if global.zoom.scale() > 6 and global.zoom.scale() <= 176
+    if global.zoom.scale() > 6 and global.zoom.scale() <= global.ZOOM.codepoints
         left_square = Math.floor(left / 16)
         right_square = Math.ceil(right / 16)
         top_square = Math.floor(top / 16)
@@ -138,7 +145,7 @@ redraw = () ->
                         code: ((Math.floor(j / 256) + 4 * Math.floor(i / 256)))*65536 + (Math.floor(i / 16) % 16)*4096 + (Math.floor(j / 16) % 16)*256 + (j % 16)*16 + (i % 16)
                         
     codepoints = global.vis.selectAll('.codepoint')
-        .data((if global.zoom.scale() > 176 then coords else []), (d) -> d.code)
+        .data((if global.zoom.scale() > global.ZOOM.codepoints then coords else []), (d) -> d.code)
         
     codepoints
       .enter().append('text')
@@ -176,6 +183,10 @@ redraw = () ->
     
 on_zoom = () ->
     redraw()
+    
+fit_bounds = (d) ->
+    bounds = global.path_generator.bounds(d)
+    return 0.8 * Math.min(bounds[1][0]-bounds[0][0],bounds[1][1]-bounds[0][1])
     
 window.main = () ->
     ### hexadecimal formatters ###
@@ -222,13 +233,22 @@ window.main = () ->
     d3.json 'vis/data/Blocks.topo.json', (error, data) ->
         blocks = topojson.feature(data, data.objects.Blocks)
         
-        blocks_layer.selectAll('.block')
+        new_block = blocks_layer.selectAll('.block')
             .data(blocks.features)
-          .enter().append('path')
+          .enter().append('g')
+          
+        new_block.append('path')
             .attr('class', 'block')
             .attr('d', global.path_generator)
           .append('title')
             .text((d) -> d.properties.name)
+            
+        new_block.append('text')
+            .attr('class', 'block_symbol')
+            .text((d) -> d.properties.symbol)
+            .attr('transform', (d) -> "translate(#{global.path_generator.centroid(d)})")
+            .attr('font-size', (d) -> "#{fit_bounds(d)}px")
+            .attr('dy', (d) -> "#{fit_bounds(d)*0.35}")
             
         blocks_layer.append('path')
             .datum(topojson.mesh(data, data.objects.Blocks))

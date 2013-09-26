@@ -1,11 +1,12 @@
 (function() {
-  var global, on_zoom, redraw;
+  var fit_bounds, global, on_zoom, redraw;
 
   global = {
     /* constants
     */
     ZOOM: {
-      characters: 64
+      characters: 64,
+      codepoints: 176
     },
     BLOCK_BORDER: 8
   };
@@ -27,6 +28,13 @@
     */
     global.vis.selectAll('.block').attr('d', global.path_generator);
     global.vis.selectAll('.block_borders').attr('d', global.path_generator);
+    global.vis.selectAll('.block_symbol').attr('transform', function(d) {
+      return "translate(" + (global.path_generator.centroid(d)) + ")";
+    }).attr('font-size', function(d) {
+      return "" + (fit_bounds(d)) + "px";
+    }).attr('dy', function(d) {
+      return "" + (fit_bounds(d) * 0.35);
+    }).attr('opacity', global.zoom.scale() > global.ZOOM.characters ? 0.1 : 1);
     /* draw gridlines: filter the obtained domains according to the current zoom
     */
     x_domain = (function() {
@@ -113,7 +121,7 @@
     /* draw plane-level digits
     */
     square_coords = [];
-    if (global.zoom.scale() > 6 && global.zoom.scale() <= 176) {
+    if (global.zoom.scale() > 6 && global.zoom.scale() <= global.ZOOM.codepoints) {
       left_square = Math.floor(left / 16);
       right_square = Math.ceil(right / 16);
       top_square = Math.floor(top / 16);
@@ -162,7 +170,7 @@
         }
       }
     }
-    codepoints = global.vis.selectAll('.codepoint').data((global.zoom.scale() > 176 ? coords : []), function(d) {
+    codepoints = global.vis.selectAll('.codepoint').data((global.zoom.scale() > global.ZOOM.codepoints ? coords : []), function(d) {
       return d.code;
     });
     codepoints.enter().append('text').attr('class', 'codepoint digit').text(function(d) {
@@ -196,6 +204,12 @@
 
   on_zoom = function() {
     return redraw();
+  };
+
+  fit_bounds = function(d) {
+    var bounds;
+    bounds = global.path_generator.bounds(d);
+    return 0.8 * Math.min(bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1]);
   };
 
   window.main = function() {
@@ -234,10 +248,20 @@
       }
     }));
     d3.json('vis/data/Blocks.topo.json', function(error, data) {
-      var blocks;
+      var blocks, new_block;
       blocks = topojson.feature(data, data.objects.Blocks);
-      blocks_layer.selectAll('.block').data(blocks.features).enter().append('path').attr('class', 'block').attr('d', global.path_generator).append('title').text(function(d) {
+      new_block = blocks_layer.selectAll('.block').data(blocks.features).enter().append('g');
+      new_block.append('path').attr('class', 'block').attr('d', global.path_generator).append('title').text(function(d) {
         return d.properties.name;
+      });
+      new_block.append('text').attr('class', 'block_symbol').text(function(d) {
+        return d.properties.symbol;
+      }).attr('transform', function(d) {
+        return "translate(" + (global.path_generator.centroid(d)) + ")";
+      }).attr('font-size', function(d) {
+        return "" + (fit_bounds(d)) + "px";
+      }).attr('dy', function(d) {
+        return "" + (fit_bounds(d) * 0.35);
       });
       return blocks_layer.append('path').datum(topojson.mesh(data, data.objects.Blocks)).attr('class', 'block_borders').attr('d', global.path_generator);
     });
