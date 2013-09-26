@@ -229,7 +229,7 @@
         return this.stream.point(global.x(x), global.y(-y));
       }
     }));
-    d3.json('data/Blocks.topo.json', function(error, data) {
+    d3.json('vis/data/Blocks.topo.json', function(error, data) {
       var blocks;
       blocks = topojson.feature(data, data.objects.Blocks);
       return global.vis.selectAll('.block').data(blocks.features).enter().append('path').attr('class', 'block').attr('d', global.path_generator).append('title').text(function(d) {

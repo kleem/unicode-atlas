@@ -213,7 +213,7 @@ window.main = () ->
     global.path_generator = d3.geo.path()
         .projection d3.geo.transform({point: (x,y) -> this.stream.point(global.x(x),global.y(-y)) })
         
-    d3.json 'data/Blocks.topo.json', (error, data) ->
+    d3.json 'vis/data/Blocks.topo.json', (error, data) ->
         blocks = topojson.feature(data, data.objects.Blocks)
         
         global.vis.selectAll('.block')
