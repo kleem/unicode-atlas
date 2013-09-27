@@ -10,14 +10,12 @@ svg {
 }
 
 .world_border {
-  stroke-width: 3;
   stroke: #0a4b75;
   fill: none;
 }
 
 .meridian, .parallel {
   fill: none;
-  stroke-width: 1;
   stroke: #1f78b4;
   opacity: 0.1;
 }
@@ -25,34 +23,24 @@ svg {
   opacity: 1;
 }
 .meridian.plane, .parallel.plane {
-  opacity: 0.2;
+  opacity: 0.3;
 }
 
 .digit {
   font-family: sans-serif;
   fill: #1f78b4;
-  font-size: 9;
-}
-.digit.world {
-  font-size: 12;
-}
-.digit.world.halo {
-  stroke: white;
-  stroke-width: 4;
-  stroke-linejoin: round;
 }
 .digit.codepoint {
   text-anchor: middle;
 }
 
 .block {
-  fill: #e3e3e3;
+  fill: #e8e8e8;
   stroke: none;
 }
 
 .block_borders {
-  stroke: #aaaaaa;
-  stroke-width: 1;
+  stroke: #999999;
   fill: none;
 }
 
@@ -62,7 +50,7 @@ svg {
 }
 
 .block:hover {
-  fill: #eeeeee;
+  fill: #f2f2f2;
 }
 
 .character, .meridian, .parallel, .digit {

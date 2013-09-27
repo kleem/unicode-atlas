@@ -8,13 +8,11 @@ svg
     shape-rendering: crispEdges
     
 .world_border
-    stroke-width: 3
     stroke: #0A4B75
     fill: none
     
 .meridian, .parallel
     fill: none
-    stroke-width: 1
     stroke: #1F78B4
     opacity: 0.1
     
@@ -22,30 +20,21 @@ svg
         opacity: 1
         
     &.plane
-        opacity: 0.2
+        opacity: 0.3
         
 .digit
     font-family: sans-serif
     fill: #1F78B4
-    font-size: 9
     
-    &.world
-        font-size: 12
-    &.world.halo
-        stroke: white
-        stroke-width: 4
-        stroke-linejoin: round
-        
     &.codepoint
         text-anchor: middle
         
 .block
-    fill: #E3E3E3
+    fill: #E8E8E8
     stroke: none
     
 .block_borders
-    stroke: #AAA
-    stroke-width: 1
+    stroke: #999
     fill: none
     
 .character
@@ -54,7 +43,7 @@ svg
     
 // hover highlighting for blocks
 .block:hover
-    fill: #EEE
+    fill: #F2F2F2
 .character, .meridian, .parallel, .digit
     pointer-events: none
     
