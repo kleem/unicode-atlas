@@ -4,8 +4,7 @@ global = {
         plane_level: 12,
         characters: 64,
         codepoints: 176
-    },
-    BLOCK_BORDER: 8
+    }
 }
 
 redraw = () ->
@@ -29,10 +28,8 @@ redraw = () ->
         .attr('d', global.path_generator)
         
     global.vis.selectAll('.block_symbol')
-        .attr('transform', (d) -> "translate(#{global.path_generator.centroid(d)})")
-        .attr('font-size', (d) -> "#{fit_bounds(d)}px")
-        .attr('dy', (d) -> "#{fit_bounds(d)*0.35}")
         .attr('opacity', if global.zoom.scale() > global.ZOOM.characters then 0.1 else 1)
+        .call(place_symbol)
         
     ### draw gridlines: filter the obtained domains according to the current zoom ###
     x_domain = [left+1...right].filter (d) ->
@@ -189,6 +186,26 @@ fit_bounds = (d) ->
     bounds = global.path_generator.bounds(d)
     return 0.8 * Math.min(bounds[1][0]-bounds[0][0],bounds[1][1]-bounds[0][1])
     
+place_symbol = () ->
+    this
+        .attr('transform', (d) -> (
+            ### custom placement for some block symbols ###
+            pre = ''
+            post = ''
+            if d.properties.name == 'Hangul Syllables'
+                pre = "translate(0 #{-0.7*global.zoom.scale()}) "
+                post = ' scale(0.6)'
+            else if d.properties.name == 'CJK Unified Ideographs Extension C'
+                pre = "translate(0 #{-2.2*global.zoom.scale()}) "
+                post = ' scale(0.6)'
+            else if d.properties.name == 'Private Use Area'
+                pre = "translate(0 #{0.6*global.zoom.scale()}) "
+                
+            return "#{pre}translate(#{global.path_generator.centroid(d)})#{post}"
+        ))
+        .attr('font-size', (d) -> "#{fit_bounds(d)}px")
+        .attr('dy', (d) -> "#{fit_bounds(d)*0.3}")
+    
 window.main = () ->
     ### hexadecimal formatters ###
     global.hex = d3.format('X')
@@ -247,9 +264,7 @@ window.main = () ->
         new_block.append('text')
             .attr('class', 'block_symbol')
             .text((d) -> d.properties.symbol)
-            .attr('transform', (d) -> "translate(#{global.path_generator.centroid(d)})")
-            .attr('font-size', (d) -> "#{fit_bounds(d)}px")
-            .attr('dy', (d) -> "#{fit_bounds(d)*0.35}")
+            .call(place_symbol)
             
         blocks_layer.append('path')
             .datum(topojson.mesh(data, data.objects.Blocks))
