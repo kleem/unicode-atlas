@@ -65,7 +65,7 @@
     }));
     /* get data
     */
-    return d3.json('vis/data/Blocks.topo.json', function(error, data) {
+    return d3.json('data/Blocks.topo.json', function(error, data) {
       /* create the root layer
       */      module.layers = module.vis.append('g').attr('class', 'layers');
       /* draw the layers' content
