@@ -37,7 +37,7 @@ window.main = () ->
         
     ### zoom behavior ###
     module.zoom = d3.behavior.zoom()
-        .scaleExtent([0.35, 1024])
+        .scaleExtent([0.35, 358.4])
         .on('zoom', on_zoom)
         
     module.vis.call(module.zoom)

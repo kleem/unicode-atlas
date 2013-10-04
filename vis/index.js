@@ -42,7 +42,7 @@
     module.vis = d3.select('body').append('svg').attr('width', '100%').attr('height', '100%');
     /* zoom behavior
     */
-    module.zoom = d3.behavior.zoom().scaleExtent([0.35, 1024]).on('zoom', on_zoom);
+    module.zoom = d3.behavior.zoom().scaleExtent([0.35, 358.4]).on('zoom', on_zoom);
     module.vis.call(module.zoom);
     /* obtain the current viewport to center the chart
     */
