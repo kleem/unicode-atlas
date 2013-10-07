@@ -56,7 +56,7 @@ def codepoint2cartesian(c):
     return ((int(c/16)%256+256*int(c/65536))%1024, (c%16+16*int(c/4096))%256+256*int(c/(4*65536)))
     
 # output a CSV file with a WKT field representing the geometry
-print 'GEOMETRY;code;block;general_cat_1;general_cat'
+print 'GEOMETRY;code;block;general_cat_1;general_cat;age'
 
 for c in xrange(0x110000):
     # find in which block this codepoint is
