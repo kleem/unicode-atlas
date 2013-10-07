@@ -6,6 +6,21 @@ for line in filter(lambda line: len(line)==2 and not line[0].startswith('#'), cs
     range_strings = line[0].split('..')
     blocks.append({'range': [int(range_strings[0],16), int(range_strings[1],16)], 'name': line[1]})
     
+# read age ranges
+ages = []
+
+for line in filter(lambda line: len(line)==2 and not line[0].startswith('#'), csv.reader(open('DerivedAge.txt'), delimiter=';', skipinitialspace=True)):
+    range_strings = line[0].split('..')
+    
+    if len(range_strings) == 1:
+        a = int(range_strings[0],16)
+        b = a
+    else:
+        a = int(range_strings[0],16)
+        b = int(range_strings[1],16)
+        
+    ages.append({'range': [a, b], 'age': line[1].split('#')[0].strip()})
+    
 # read unicode data (all codepoints)
 codepoints = {}
 
@@ -51,12 +66,19 @@ for c in xrange(0x110000):
             block_name = block['name']
             break
             
+    # find the age of this codepoint
+    age = ''
+    for a in ages:
+        if a['range'][0] <= c <= a['range'][1]:
+            age = a['age']
+            break
+            
     x, y = codepoint2cartesian(c)
     
     if c in codepoints:
-        data_fields = ';%s;%s;%s;%s' % (codepoints[c]['code'], block_name, codepoints[c]['general_cat_1'], codepoints[c]['general_cat'])
+        data_fields = ';%s;%s;%s;%s;%s' % (codepoints[c]['code'], block_name, codepoints[c]['general_cat_1'], codepoints[c]['general_cat'], age)
     else:
-        data_fields = ';;%s;;' % (block_name)
+        data_fields = ';;%s;;;%s' % (block_name, age)
         
     print 'MULTIPOLYGON (((%d %d,%d %d,%d %d,%d %d,%d %d)))%s' % (x, -y, x, -y-1, x+1, -y-1, x+1, -y, x, -y, data_fields)
     
