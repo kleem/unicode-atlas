@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TopoJSON renderer</title>
+        <link type="text/css" href="index.css" rel="stylesheet"/>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <script src="index.js"></script>
+    </head>
+    <body onload="main()">
+        <svg width="1044" height="1300">
+            <g id="diagram" transform="translate(10,10)">
+                <line class="grid" x1="0" y1="0" x2="1024" y2="0"/>
+                <line class="grid" x1="0" y1="256" x2="1024" y2="256"/>
+                <line class="grid" x1="0" y1="512" x2="1024" y2="512"/>
+                <line class="grid" x1="0" y1="768" x2="1024" y2="768"/>
+                <line class="grid" x1="0" y1="1024" x2="1024" y2="1024"/>
+                <line class="grid" x1="0" y1="1280" x2="256" y2="1280"/>
+                
+                <line class="grid" x1="0" y1="0" x2="0" y2="1280"/>
+                <line class="grid" x1="256" y1="0" x2="256" y2="1280"/>
+                <line class="grid" x1="512" y1="0" x2="512" y2="1024"/>
+                <line class="grid" x1="768" y1="0" x2="768" y2="1024"/>
+                <line class="grid" x1="1024" y1="0" x2="1024" y2="1024"/>
+                
+                <path class="border" d="M-1 -1 L1025 -1 L1025 1025 L257 1025 L257 1281 L-1 1281 z"/>
+            </g>
+            <g id="legend" transform="translate(306,1070) scale(2)">
+                <g>
+                    <g>
+                        <rect class="L" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Letter</text>
+                        <text class="count" x="24" y="27">101.013 (40.44%)</text>
+                    </g>
+                    <g transform="translate(0,40)">
+                        <rect class="M" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Mark</text>
+                        <text class="count" x="24" y="27">1.645 (0.66%)</text>
+                    </g>
+                    <g transform="translate(0,80)">
+                        <rect class="N" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Number</text>
+                        <text class="count" x="24" y="27">1.148 (0.46%)</text>
+                    </g>
+                </g>
+                <g transform="translate(126,0)">
+                    <g>
+                        <rect class="P" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Punctuation</text>
+                        <text class="count" x="24" y="27">632 (0.25%)</text>
+                    </g>
+                    <g transform="translate(0,40)">
+                        <rect class="S" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Symbol</text>
+                        <text class="count" x="24" y="27">5.520 (2.21%)</text>
+                    </g>
+                    <g transform="translate(0,80)">
+                        <rect class="Z" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Separator</text>
+                        <text class="count" x="24" y="27">20 (0.01%)</text>
+                    </g>
+                </g>
+                <g transform="translate(250,0)">
+                    <g>
+                        <rect class="C" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Other</text>
+                        <text class="count" x="24" y="27">139.786 (55.97%)</text>
+                    </g>
+                </g>
+            </g>
+        </svg>
+    </body>
+</html>
