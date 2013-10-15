@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Unicode's General Categories</title>
+        <link type="text/css" href="index.css" rel="stylesheet"/>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <script src="index.js"></script>
+    </head>
+    <body onload="main()">
+        <svg width="1044" height="1300">
+            <g id="diagram" transform="translate(10,10)">
+                <line class="grid" x1="0" y1="0" x2="1024" y2="0"/>
+                <line class="grid" x1="0" y1="256" x2="1024" y2="256"/>
+                <line class="grid" x1="0" y1="512" x2="1024" y2="512"/>
+                <line class="grid" x1="0" y1="768" x2="1024" y2="768"/>
+                <line class="grid" x1="0" y1="1024" x2="1024" y2="1024"/>
+                <line class="grid" x1="0" y1="1280" x2="256" y2="1280"/>
+                
+                <line class="grid" x1="0" y1="0" x2="0" y2="1280"/>
+                <line class="grid" x1="256" y1="0" x2="256" y2="1280"/>
+                <line class="grid" x1="512" y1="0" x2="512" y2="1024"/>
+                <line class="grid" x1="768" y1="0" x2="768" y2="1024"/>
+                <line class="grid" x1="1024" y1="0" x2="1024" y2="1024"/>
+                
+                <path class="border" d="M-1 -1 L1025 -1 L1025 1025 L257 1025 L257 1281 L-1 1281 z"/>
+            </g>
+            <g id="legend" transform="translate(284,1050)">
+                <g>
+                    <g>
+                        <rect class="Lu" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Uppercase Letter</text>
+                    </g>
+                    <g transform="translate(0,24)">
+                        <rect class="Ll" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Lowercase Letter</text>
+                    </g>
+                    <g transform="translate(0,48)">
+                        <rect class="Lt" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Titlecase Letter</text>
+                    </g>
+                    <g transform="translate(0,72)">
+                        <rect class="Lm" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Modifier Letter</text>
+                    </g>
+                    <g transform="translate(0,96)">
+                        <rect class="Lo" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Other Letter</text>
+                    </g>
+                    <g transform="translate(0,120)">
+                        <rect class="Mn" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Nonspacing Mark</text>
+                    </g>
+                    <g transform="translate(0,144)">
+                        <rect class="Mc" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Spacing Mark</text>
+                    </g>
+                    <g transform="translate(0,168)">
+                        <rect class="Me" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Enclosing Mark</text>
+                    </g>
+                    <g transform="translate(0,192)">
+                        <rect class="Nd" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Decimal Number</text>
+                    </g>
+                    <g transform="translate(0,216)">
+                        <rect class="Nl" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Letter Number</text>
+                    </g>
+                </g>
+                <g transform="translate(280,0)">
+                    <g>
+                        <rect class="No" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Other Number</text>
+                    </g>
+                    <g transform="translate(0,24)">
+                        <rect class="Pc" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Connector Punctuation</text>
+                    </g>
+                    <g transform="translate(0,48)">
+                        <rect class="Pd" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Dash Punctuation</text>
+                    </g>
+                    <g transform="translate(0,72)">
+                        <rect class="Ps" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Open Punctuation</text>
+                    </g>
+                    <g transform="translate(0,96)">
+                        <rect class="Pe" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Close Punctuation</text>
+                    </g>
+                    <g transform="translate(0,120)">
+                        <rect class="Pi" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Initial Punctuation</text>
+                    </g>
+                    <g transform="translate(0,144)">
+                        <rect class="Pf" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Final Punctuation</text>
+                    </g>
+                    <g transform="translate(0,168)">
+                        <rect class="Po" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Other Punctuation</text>
+                    </g>
+                    <g transform="translate(0,192)">
+                        <rect class="Sm" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Math Symbol</text>
+                    </g>
+                    <g transform="translate(0,216)">
+                        <rect class="Sc" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Currency Symbol</text>
+                    </g>
+                </g>
+                <g transform="translate(560,0)">
+                    <g>
+                        <rect class="Sk" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Modifier Symbol</text>
+                    </g>
+                    <g transform="translate(0,24)">
+                        <rect class="So" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Other Symbol</text>
+                    </g>
+                    <g transform="translate(0,48)">
+                        <rect class="Zs" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Space Separator</text>
+                    </g>
+                    <g transform="translate(0,72)">
+                        <rect class="Zl" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Line Separator</text>
+                    </g>
+                    <g transform="translate(0,96)">
+                        <rect class="Zp" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Paragraph Separator</text>
+                    </g>
+                    <g transform="translate(0,120)">
+                        <rect class="Cc" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Control</text>
+                    </g>
+                    <g transform="translate(0,144)">
+                        <rect class="Cf" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Format</text>
+                    </g>
+                    <g transform="translate(0,168)">
+                        <rect class="Cs" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Surrogate</text>
+                    </g>
+                    <g transform="translate(0,192)">
+                        <rect class="Co" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Private Use</text>
+                    </g>
+                    <g transform="translate(0,216)">
+                        <rect class="Cn" x="0" y="0" width="16" height="16"/>
+                        <text x="24" y="14">Unassigned</text>
+                    </g>
+                </g>
+            </g>
+        </svg>
+    </body>
+</html>

@@ -16,7 +16,7 @@
     */
     /* Colorbrewer color scheme: 7-class Set 3 qualitative
     */
-    colorify = d3.scale.category10().domain(['L', 'M', 'N', 'P', 'S', 'Z', 'C']).range(['#80B1D3', '#BEBADA', '#8DD3C7', '#FB8072', '#FDB462', '#FFFFB3', '#B3DE69']);
+    colorify = d3.scale.ordinal().domain(['L', 'M', 'N', 'P', 'S', 'Z', 'C']).range(['#80B1D3', '#BEBADA', '#8DD3C7', '#FB8072', '#FDB462', '#FFFFB3', '#B3DE69']);
     /* color the legend
     */
     d3.selectAll('#legend rect').style('fill', function(d) {

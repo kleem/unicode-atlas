@@ -1,0 +1,22 @@
+.region {
+  stroke: none;
+}
+
+.border {
+  fill: none;
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.grid {
+  stroke: gray;
+  stroke-width: 0.5px;
+}
+
+#legend text {
+  font-family: sans-serif;
+  font-size: 16px;
+}
+#legend .count {
+  font-size: 11px;
+}
