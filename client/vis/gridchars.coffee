@@ -210,6 +210,7 @@ module.redraw = (params) ->
       .enter().append('text')
         .attr('class', 'character')
         .text((d) -> String.fromCodePoint(d.code))
+        .style('font-family', (d) -> "uv#{d3.format('04x')(0x400 * Math.floor(d.code / 0x400))}")
         
     characters
         .attr('x', (d) -> d.j + 0.5)
