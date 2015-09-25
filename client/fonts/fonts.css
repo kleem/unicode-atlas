@@ -1,4 +1,81 @@
 @font-face {
+  font-family: "Aegyptus";
+  src: url(Aegyptus_B.ttf);
+  unicode-range: U+13000 –1342F;
+}
+
+@font-face {
+  font-family: "Aegean";
+  src: local("Aegean Normale");
+  unicode-range: U+10100 –1013F;
+}
+
+@font-face {
+  font-family: "Musica";
+  src: url(Musica.ttf);
+  unicode-range: U+1D000-1D0FF, U+1D100-1D1FF, U+1D200-1D24F;
+}
+
+@font-face {
+  font-family: "Tengwar";
+  src: url(TengwarFormalCSUR.ttf);
+  unicode-range: U+E000 –D07D;
+}
+
+@font-face {
+  font-family: "Akkadian";
+  src: url(Akkadian.ttf);
+  unicode-range: U+12000-125FF;
+}
+
+@font-face {
+  font-family: "Maya";
+  src: url(Maya.ttf);
+  unicode-range: U+F200-F847;
+}
+
+@font-face {
+  font-family: "Myanmar";
+  src: url(Padauk.ttf);
+  unicode-range: U+1000 –109F;
+}
+
+@font-face {
+  font-family: "Georgian";
+  src: url(DroidSansGeorgian.ttf);
+  unicode-range: U+10A0 –10C5, U+10D0-10FC, U+2D00-2D25;
+}
+
+@font-face {
+  font-family: "Ogham";
+  src: url(BabelStoneOghamR.ttf);
+  unicode-range: U+1680-169F;
+}
+
+@font-face {
+  font-family: "Quivira";
+  src: url(Quivira.ttf);
+  unicode-range: U+1700 –17FF;
+}
+
+@font-face {
+  font-family: "Mongolian";
+  src: url(Mongolian_Baiti.ttf);
+  unicode-range: U+1800-18AF;
+}
+
+@font-face {
+  font-family: "Limbu";
+  src: local("Code2000");
+  unicode-range: U+1900 –194F;
+}
+
+.character {
+  font-family: serif, "Aegean", "Aegyptus", "Akkadian", "Georgian", "Limbu", "Maya", "Mongolian", "Musica", "Myanmar", "Ogham", "Quivira", "Tengwar";
+}
+
+/*
+@font-face {
   font-family: "uv0000";
   src: url(universalia/u0000-webfont.woff) format("woff");
   unicode-range: U+00000 –003ff;
@@ -345,3 +422,4 @@
   src: url(universalia/ufc00-webfont.woff) format("woff");
   unicode-range: U+0fc00 –0ffff;
 }
+*/
