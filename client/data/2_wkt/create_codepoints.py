@@ -56,7 +56,7 @@ def codepoint2cartesian(c):
     return ((int(c/16)%256+256*int(c/65536))%1024, (c%16+16*int(c/4096))%256+256*int(c/(4*65536)))
     
 # output a CSV file with a WKT field representing the geometry
-print('GEOMETRY;code;block;general_cat_1;general_cat;age')
+print('code;x;y;GEOMETRY;block;general_cat_1;general_cat;age')
 
 for c in range(0x110000):
     # find in which block this codepoint is
@@ -76,9 +76,7 @@ for c in range(0x110000):
     x, y = codepoint2cartesian(c)
     
     if c in codepoints:
-        data_fields = ';%s;%s;%s;%s;%s' % (codepoints[c]['code'], block_name, codepoints[c]['general_cat_1'], codepoints[c]['general_cat'], age)
+        data_fields = '%s;%s;%s;%s' % (block_name, codepoints[c]['general_cat_1'], codepoints[c]['general_cat'], age)
     else:
-        data_fields = ';;%s;;;%s' % (block_name, age)
-        
-    print('MULTIPOLYGON (((%d %d,%d %d,%d %d,%d %d,%d %d)))%s' % (x, -y, x, -y-1, x+1, -y-1, x+1, -y, x, -y, data_fields))
-    
+        data_fields = '%s;;;%s' % (block_name, age)
+    print(f'{c:04X};{x};{y};MULTIPOLYGON ((({x} {-y},{x} {-y-1},{x+1} {-y-1},{x+1} {-y},{x} {-y})));{data_fields}')
