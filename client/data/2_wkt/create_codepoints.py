@@ -36,7 +36,7 @@ for line in csv.reader(open('UnicodeData.txt'), delimiter=';'):
     # enumerate codepoints in ranges
     # CJK ideograph extension A + CJK ideograph + Hangul syllable + CJK ideograph extension B, C, D
     if line[0] in RANGE_ENDS and last_start in ('3400','4E00','AC00','20000','2A700','2B740'):
-        for c in xrange(int(last_start,16), int(line[0],16)+1):
+        for c in range(int(last_start,16), int(line[0],16)+1):
             codepoints[c] = {
                 'code': '%d' % c,
                 'general_cat_1': 'L',
@@ -56,9 +56,9 @@ def codepoint2cartesian(c):
     return ((int(c/16)%256+256*int(c/65536))%1024, (c%16+16*int(c/4096))%256+256*int(c/(4*65536)))
     
 # output a CSV file with a WKT field representing the geometry
-print 'GEOMETRY;code;block;general_cat_1;general_cat;age'
+print('GEOMETRY;code;block;general_cat_1;general_cat;age')
 
-for c in xrange(0x110000):
+for c in range(0x110000):
     # find in which block this codepoint is
     block_name = ''
     for block in blocks:
@@ -80,5 +80,5 @@ for c in xrange(0x110000):
     else:
         data_fields = ';;%s;;;%s' % (block_name, age)
         
-    print 'MULTIPOLYGON (((%d %d,%d %d,%d %d,%d %d,%d %d)))%s' % (x, -y, x, -y-1, x+1, -y-1, x+1, -y, x, -y, data_fields)
+    print('MULTIPOLYGON (((%d %d,%d %d,%d %d,%d %d,%d %d)))%s' % (x, -y, x, -y-1, x+1, -y-1, x+1, -y, x, -y, data_fields))
     
