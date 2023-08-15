@@ -36,10 +36,10 @@ with open('data/1_source/Unidings utf8.csv', newline='', encoding="utf-8") as cs
         unidings_symbol[row['block_name']] = row['symbol']
 
 # write files as GeoJSON
-with open('data/3_regions/Land.geo.json', 'w') as file:
+with open('data/3_regions/Land.json', 'w') as file:
     file.write(to_geojson(land)) # MultiPolygon
 
-with open('data/3_regions/Blocks.geo.json', 'w', encoding="utf-8") as file:
+with open('data/3_regions/Blocks.json', 'w', encoding="utf-8") as file:
     features = []
     for (block_name, multipolygon) in blocks.items():
         properties = {
