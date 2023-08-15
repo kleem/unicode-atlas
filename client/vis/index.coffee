@@ -58,7 +58,7 @@ window.main = () ->
         .projection d3.geo.transform({point: (x,y) -> this.stream.point(x,-y) })
         
     ### get data ###
-    d3.json 'data/4_topojson/Blocks.topo.json', (error, data) ->
+    d3.json 'data/Blocks.topo.json', (error, data) ->
         ### create the root layer ###
         module.layers = module.vis.append('g').attr('class', 'layers')
         
