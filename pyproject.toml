@@ -1,0 +1,15 @@
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "Clara Bacciu", email = "clara.bacciu@gmail.com"},
+]
+dependencies = [
+    "shapely>=2.0.1",
+    "geojson>=2.5.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
