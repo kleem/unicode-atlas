@@ -6,7 +6,16 @@ groups = ["default"]
 cross_platform = true
 static_urls = false
 lock_version = "4.3"
-content_hash = "sha256:6938d6ad5bd9cbc1e288a5940db2a7f76ca7bd03f6e9f212202cfd9b7b92a53d"
+content_hash = "sha256:14377b1cb5d6e02c571eb4e2ff1f087d2f42f2df3789a9a6a88414c20771ded6"
+
+[[package]]
+name = "geojson"
+version = "2.5.0"
+summary = "Python bindings and utilities for GeoJSON"
+files = [
+    {file = "geojson-2.5.0-py2.py3-none-any.whl", hash = "sha256:ccbd13368dd728f4e4f13ffe6aaf725b6e802c692ba0dde628be475040c534ba"},
+    {file = "geojson-2.5.0.tar.gz", hash = "sha256:6e4bb7ace4226a45d9c8c8b1348b3fc43540658359f93c3f7e03efa9f15f658a"},
+]
 
 [[package]]
 name = "numpy"
