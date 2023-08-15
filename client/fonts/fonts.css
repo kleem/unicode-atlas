@@ -1,6 +1,12 @@
 @font-face {
+  font-family: "NotoSansLinearA-Regular";
+  src: url(Noto/NotoSansLinearA-Regular.ttf);
+  unicode-range: U+10600–1077F;
+}
+
+@font-face {
   font-family: "NotoSansOldHungarian-Regular";
-  src: url(OFL/NotoSansOldHungarian-Regular.ttf);
+  src: url(Noto/NotoSansOldHungarian-Regular.ttf);
   unicode-range: U+10C80–10CFF;
 }
 
@@ -77,7 +83,7 @@
 }
 
 .character {
-  font-family: serif, "Aegean", "Aegyptus", "Akkadian", "Georgian", "Limbu", "Maya", "Mongolian", "Musica", "Myanmar", "Ogham", "Quivira", "Tengwar", "NotoSansOldHungarian-Regular";
+  font-family: serif, "Aegean", "Aegyptus", "Akkadian", "Georgian", "Limbu", "Maya", "Mongolian", "Musica", "Myanmar", "Ogham", "Quivira", "Tengwar", "NotoSansOldHungarian-Regular", "NotoSansLinearA-Regular";
 }
 
 /*
